@@ -1,7 +1,7 @@
 FBX Importer
 ==============
 
-A FBX importer and viewer for JavaFX 8.
+An FBX importer and viewer for JavaFX 8.
 
 ## Build Instructions
 
