@@ -1,0 +1,48 @@
+apply plugin:'application'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+defaultTasks = ["jar", "jfbxlib"]
+
+jar {
+	archiveName "JFbxViewer.jar"
+	manifest.attributes("Main-Class": "de.tesis.dynaware.javafx.graphics.viewer.FbxViewer")
+}
+
+task javah {
+
+	def inputClass = "de.tesis.dynaware.javafx.graphics.importers.fbx.JFbxLib";
+	def inputClassPath = inputClass.replaceAll('\\.', '/')+".class"
+	def outputFile = "${buildDir}/generated/de_tesis_dynaware_javafx_graphics_importers_fbx_JFbxLib.h"
+	inputs.file sourceSets.main.output.asFileTree.matching {
+		include inputClassPath
+	}
+	outputs.file outputFile
+	doLast {
+		ant.javah(class: inputClass, outputFile: outputFile, classpath:sourceSets.main.output.asPath)
+	}
+}
+
+task jfbxlib(type: Exec, dependsOn: javah) {
+	
+	if (!System.getProperty("os.name").toLowerCase().contains("windows")) {
+		ant.fail("This build script supports Windows only")
+	}
+	
+	def osArch = getOsArch()
+
+	workingDir "${projectDir}"
+	executable "vcmake.bat"
+	environment OS_ARCH: osArch
+}
+
+String getOsArch() {
+
+	if (System.getProperty("os.arch").toLowerCase().contains("64")) {
+		return "x86_amd64";
+	}
+	else {
+		return "x86";
+	}
+}
