@@ -85,7 +85,7 @@ public class FbxImporter {
     }
 
     /**
-     * Reads a the current node of the FBX file.
+     * Reads the current node of the FBX file.
      * 
      * @param jFbxLib the {@link JFbxLib} instance that has the file open
      * @throws IOException if there is a problem loading the file
@@ -190,14 +190,14 @@ public class FbxImporter {
                     meshView.getTransforms().add(Transform.affine(g[0],g[4],g[8],g[12],g[1],g[5],g[9],g[13],g[2],g[6],g[10],g[14]));
                 }
                 
-                double s[] = jFbxLib.getNodeGeometricTranslation();
-                if (s!=null) {
-                    meshView.getTransforms().add(new Translate(s[0], s[1], s[2]));
+                double t[] = jFbxLib.getNodeGeometricTranslation();
+                if (t!=null) {
+                    meshView.getTransforms().add(new Translate(t[0], t[1], t[2]));
                 }
 
                 root.getChildren().add(meshView);
             } 
-        } 
+        }
 
         // Repeat this process for the next node in the graph.
         if (jFbxLib.nextChild()) {
@@ -216,10 +216,22 @@ public class FbxImporter {
     /**
      * Creates a new color for the given values.
      * 
-     * @param colorArray
-     * @return the new color
+     * <p>
+     * If a value is outside the range [0,1] it is cut back.
+     * </p>
+     * 
+     * @param colorArray the rgba values for the new color
+     * @return the new {@link Color} instance
      */
     private Color createColor(double[] colorArray) {
+        
+        for (int i=0; i<colorArray.length; i++) {
+            if (colorArray[i]<0) {
+                colorArray[i]=0;
+            } else if (colorArray[i]>1) {
+                colorArray[i]=1;
+            }
+        }
         
         // Transparency doesn't seem to work properly yet in JavaFX 3D, just set alpha to 1.
         return new Color(colorArray[0], colorArray[1], colorArray[2], 1);

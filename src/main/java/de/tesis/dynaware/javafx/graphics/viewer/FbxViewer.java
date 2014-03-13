@@ -24,7 +24,7 @@ public class FbxViewer extends Application {
 	@Override
 	public void start(Stage stage) throws IOException {
 
-	    final URL location = getClass().getResource("FbxViewer.fxml");
+        final URL location = getClass().getResource("FbxViewer.fxml");
         final FXMLLoader loader = new FXMLLoader();
         final VBox root = (VBox) loader.load(location.openStream());
 

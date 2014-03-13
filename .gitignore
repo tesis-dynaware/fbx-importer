@@ -1,3 +1,7 @@
-/.gradle/
-/build/
+/.gradle
+/build
+/bin
 /samples/*.fbm
+.classpath
+.project
+.cproject

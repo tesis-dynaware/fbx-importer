@@ -32,7 +32,6 @@
 package de.tesis.dynaware.javafx.graphics.viewer;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
@@ -58,8 +57,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 
-import de.tesis.dynaware.javafx.graphics.viewer.FbxViewerModel;
-import de.tesis.dynaware.javafx.graphics.viewer.SubSceneContainer;
 import de.tesis.dynaware.javafx.graphics.importers.Importer3D;
 
 /**
@@ -298,14 +295,14 @@ public class FbxViewerController implements Initializable {
                 try {
                     Group content = Importer3D.load(file.toURI().toURL().toString());
                     handleLoadResult(content, "Loaded file " + loadedPath);
-                } catch (IOException e) {
-                    handleLoadResult(null, "Failed to load file " + loadedPath);
-                    e.printStackTrace();
                 } catch (OutOfMemoryError e) {
                     handleLoadResult(null, "Not enough memory to load file " + loadedPath);
                     e.printStackTrace();
                 } catch (UnsatisfiedLinkError e) {
                     handleLoadResult(null, "Dependency jfbxlib could not be loaded");
+                    e.printStackTrace();
+                } catch (Throwable e) {
+                    handleLoadResult(null, "Failed to load file " + loadedPath);
                     e.printStackTrace();
                 }
             }
