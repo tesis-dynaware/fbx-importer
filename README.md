@@ -11,7 +11,7 @@ The FBX importer makes use of Autodesk's FBX SDK. There are both C++ and Java co
 
 First ensure the following are installed
 
-1. JDK 1.8
+1. JDK 1.8 b132+
 2. Cygwin or MinGW
 3. Visual Studio 10+
 4. Autodesk FBX SDK (www.autodesk.com/developfbx)
